@@ -1,0 +1,31 @@
+POST http://localhost:5253/tasks
+Content-Type: application/json
+
+{
+    "title": "Test",
+    "description": "Test",
+    "categoryId": "3",
+    "dueDate": "2026-09-14",
+    "isCompleted": true
+}
+
+###
+
+GET http://localhost:5253/tasks/8
+
+###
+
+GET http://localhost:5253/tasks
+
+###
+
+PUT http://localhost:5253/tasks/8
+Content-Type: application/json
+
+{
+    "title": "Test Edited",
+    "description": "Test Edited",
+    "categoryId": "1",
+    "dueDate": "2026-09-05",
+    "isCompleted": false
+}
