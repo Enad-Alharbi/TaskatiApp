@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+	// Load each feature's routes only when its section is visited.
 	{
 		path: 'tasks',
 		loadChildren: () =>
@@ -13,11 +14,13 @@ export const routes: Routes = [
 				(module) => module.CATEGORIES_ROUTES,
 			),
 	},
+	// Keep the task area as the default application view.
 	{
 		path: '',
 		pathMatch: 'full',
 		redirectTo: 'tasks',
 	},
+	// Send unknown URLs to the default feature.
 	{
 		path: '**',
 		redirectTo: 'tasks',
