@@ -1,0 +1,23 @@
+namespace TaskatiApp.Data;
+
+public static class CorsExtensions
+{
+    const string localAngularOrigin = "http://localhost:4200";
+    const string localAngularPolicy = "AllowAngular";
+
+    public static void AddAngularCorsPolicy(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(localAngularPolicy, policy =>
+            {
+                policy.WithOrigins(localAngularOrigin);
+            });
+        });
+    }
+
+    public static void UseAngularCorsPolicy(this WebApplication app)
+    {
+        app.UseCors(localAngularPolicy);
+    }
+}

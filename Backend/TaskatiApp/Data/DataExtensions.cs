@@ -4,8 +4,7 @@ namespace TaskatiApp.Data;
 
 public static class DataExtensions
 {
-
-    public static void AddTaskatiAppDb(this WebApplicationBuilder builder)
+        public static void AddTaskatiAppDb(this WebApplicationBuilder builder)
     {
         var connectionString = builder.Configuration.GetConnectionString("TaskatiApp");
         builder.Services.AddSqlite<TaskatiAppContext>(connectionString);

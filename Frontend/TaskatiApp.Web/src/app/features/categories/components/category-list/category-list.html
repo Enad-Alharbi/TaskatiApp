@@ -1,0 +1,22 @@
+<main class="category-page">
+	<header class="page-header">
+		<p class="eyebrow">TaskatiApp</p>
+		<h1>Categories</h1>
+	</header>
+
+	@if (isLoading()) {
+		<p class="status" role="status">Loading categories...</p>
+	} @else if (errorMessage()) {
+		<p class="status status-error" role="alert">{{ errorMessage() }}</p>
+	} @else if (categories().length === 0) {
+		<p class="status">No categories found.</p>
+	} @else {
+		<ul class="category-list">
+			@for (category of categories(); track category.id) {
+				<li class="category-item">
+					<span>{{ category.name }}</span>
+				</li>
+			}
+		</ul>
+	}
+</main>

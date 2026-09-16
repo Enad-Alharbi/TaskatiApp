@@ -142,3 +142,4 @@ C:\Important\Learning\ASP.NET\Projects\TaskatiApp\Backend\TaskatiApp\obj\Debug\n
 C:\Important\Learning\ASP.NET\Projects\TaskatiApp\Backend\TaskatiApp\obj\Debug\net10.0\TaskatiApp.pdb
 C:\Important\Learning\ASP.NET\Projects\TaskatiApp\Backend\TaskatiApp\obj\Debug\net10.0\TaskatiApp.genruntimeconfig.cache
 C:\Important\Learning\ASP.NET\Projects\TaskatiApp\Backend\TaskatiApp\obj\Debug\net10.0\ref\TaskatiApp.dll
+C:\Important\Learning\ASP.NET\Projects\TaskatiApp\Backend\TaskatiApp\obj\Debug\net10.0\TaskatiApp.sourcelink.json
