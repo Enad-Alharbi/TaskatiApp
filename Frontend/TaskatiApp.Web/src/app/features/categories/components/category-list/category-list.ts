@@ -21,7 +21,9 @@ export class CategoryList implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Unable to load categories.');
+        this.errorMessage.set(
+          'Could not load categories. Please check your connection and try again.',
+        );
         this.isLoading.set(false);
       },
     });
