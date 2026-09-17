@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TaskatiApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+91a5a0fc38bea34a9066db26a4568fbd7bdc2fe5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31885a36250e030809c13a6839abc6894d6a4f4e")]
 [assembly: System.Reflection.AssemblyProductAttribute("TaskatiApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TaskatiApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
