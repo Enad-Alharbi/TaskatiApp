@@ -1,0 +1,44 @@
+<aside class="sidebar">
+	<header class="brand">
+		<span class="brand-mark" aria-hidden="true">
+			<svg viewBox="0 0 24 24" focusable="false">
+				<path d="m7 12 3 3 7-7" />
+			</svg>
+		</span>
+		<span class="brand-name">TaskatiApp</span>
+	</header>
+
+	<nav class="navigation" aria-label="Main navigation">
+		<p class="section-label">Menu</p>
+
+		<a
+			class="navigation-link"
+			routerLink="/tasks"
+			routerLinkActive="navigation-link-active"
+			[routerLinkActiveOptions]="{ exact: true }"
+		>
+			<svg class="navigation-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<rect x="5" y="5" width="14" height="14" rx="2" />
+				<path d="m8 12 2.5 2.5L16 9" />
+			</svg>
+			<span>Tasks</span>
+		</a>
+
+		<a
+			class="navigation-link"
+			routerLink="/categories"
+			routerLinkActive="navigation-link-active"
+			[routerLinkActiveOptions]="{ exact: true }"
+		>
+			<svg class="navigation-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H10l2 2h6.5A1.5 1.5 0 0 1 20 9.5v7A1.5 1.5 0 0 1 18.5 18h-13A1.5 1.5 0 0 1 4 16.5v-9Z" />
+			</svg>
+			<span>Categories</span>
+		</a>
+	</nav>
+
+	<footer class="sidebar-footer">
+		<span>TaskatiApp v1.0</span>
+		<span>Made By Enad Alharbi</span>
+	</footer>
+</aside>
