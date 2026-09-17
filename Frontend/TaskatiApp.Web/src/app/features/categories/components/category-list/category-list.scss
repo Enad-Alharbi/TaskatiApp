@@ -103,14 +103,17 @@ h1 {
 }
 
 .category-name {
+	min-width: 0;
 	font-size: 15px;
 	font-weight: 500;
+	overflow-wrap: anywhere;
 }
 
 .category-actions {
 	display: flex;
 	align-items: center;
 	gap: 20px;
+	flex-shrink: 0;
 	margin-left: auto;
 }
 

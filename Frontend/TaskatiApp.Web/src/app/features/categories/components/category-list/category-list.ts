@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import type { Category } from '../../category.models';
 import { CategoryService } from '../../category.service';
 import { AddCategoryModal } from '../add-category-modal/add-category-modal';
+import { DeleteCategoryModal } from '../delete-category-modal/delete-category-modal';
 import { EditCategoryModal } from '../edit-category-modal/edit-category-modal';
 
 @Component({
-  imports: [AddCategoryModal, EditCategoryModal],
+  imports: [AddCategoryModal, DeleteCategoryModal, EditCategoryModal],
   selector: 'app-category-list',
   styleUrl: './category-list.scss',
   templateUrl: './category-list.html',
@@ -18,6 +19,7 @@ export class CategoryList implements OnInit {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly isAddCategoryModalOpen = signal(false);
   protected readonly editingCategory = signal<Category | null>(null);
+  protected readonly deletingCategory = signal<Category | null>(null);
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe({
@@ -62,5 +64,20 @@ export class CategoryList implements OnInit {
       ),
     );
     this.closeEditCategoryModal();
+  }
+
+  openDeleteCategoryModal(category: Category): void {
+    this.deletingCategory.set(category);
+  }
+
+  closeDeleteCategoryModal(): void {
+    this.deletingCategory.set(null);
+  }
+
+  removeCategory(categoryId: number): void {
+    this.categories.update((categories) =>
+      categories.filter((category) => category.id !== categoryId),
+    );
+    this.closeDeleteCategoryModal();
   }
 }
