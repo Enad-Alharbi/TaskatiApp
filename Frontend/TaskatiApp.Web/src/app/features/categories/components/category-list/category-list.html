@@ -45,7 +45,7 @@
 					</span>
 					<span class="category-name">{{ category.name }}</span>
 					<div class="category-actions">
-						<button class="text-button" type="button">Edit</button>
+						<button class="text-button" type="button" (click)="openEditCategoryModal(category)">Edit</button>
 						<button class="icon-button" type="button" aria-label="Delete category">
 							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 								<path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12M10 10v6m4-6v6" />
@@ -62,5 +62,13 @@
 	<app-add-category-modal
 		(categoryCreated)="addCategory($event)"
 		(closed)="closeAddCategoryModal()"
+	/>
+}
+
+@if (editingCategory(); as category) {
+	<app-edit-category-modal
+		[category]="category"
+		(categoryUpdated)="updateCategory($event)"
+		(closed)="closeEditCategoryModal()"
 	/>
 }
