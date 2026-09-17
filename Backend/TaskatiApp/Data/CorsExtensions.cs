@@ -11,7 +11,9 @@ public static class CorsExtensions
         {
             options.AddPolicy(localAngularPolicy, policy =>
             {
-                policy.WithOrigins(localAngularOrigin);
+                policy.WithOrigins(localAngularOrigin)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
             });
         });
     }
