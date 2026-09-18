@@ -4,7 +4,7 @@
 			<h1>Tasks</h1>
 			<p class="page-subtitle">Manage your personal and work tasks</p>
 		</div>
-		<button class="primary-button" type="button">
+		<button class="primary-button" type="button" (click)="openAddTaskModal()">
 			<span aria-hidden="true">+</span>
 			Add Task
 		</button>
@@ -30,7 +30,7 @@
 			</span>
 			<h2>No tasks yet</h2>
 			<p>Create your first task to get started.</p>
-			<button class="primary-button" type="button">
+			<button class="primary-button" type="button" (click)="openAddTaskModal()">
 				<span aria-hidden="true">+</span>
 				Add Task
 			</button>
@@ -73,3 +73,10 @@
 		</ul>
 	}
 </main>
+
+@if (isAddTaskModalOpen()) {
+	<app-add-task-modal
+		(taskCreated)="addTask($event)"
+		(closed)="closeAddTaskModal()"
+	/>
+}

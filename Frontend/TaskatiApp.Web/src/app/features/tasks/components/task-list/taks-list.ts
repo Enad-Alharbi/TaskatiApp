@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import type { TaskDetails, UpdateTaskRequest } from '../../task.models';
+import type { Task, TaskDetails, UpdateTaskRequest } from '../../task.models';
 import { TaskService } from '../../task.service';
+import { AddTaskModal, type CreatedTaskResult } from '../add-task-modal/add-task-modal';
 
 @Component({
-  imports: [],
+  imports: [AddTaskModal],
   selector: 'app-task-list',
   styleUrl: './task-list.scss',
   templateUrl: './task-list.html',
@@ -15,6 +16,7 @@ export class TaskList implements OnInit {
   protected readonly isLoading = signal(true);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly updatingTaskIds = signal<Set<number>>(new Set());
+  protected readonly isAddTaskModalOpen = signal(false);
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
@@ -67,6 +69,24 @@ export class TaskList implements OnInit {
 
   isTaskUpdating(taskId: number): boolean {
     return this.updatingTaskIds().has(taskId);
+  }
+
+  openAddTaskModal(): void {
+    this.isAddTaskModalOpen.set(true);
+  }
+
+  closeAddTaskModal(): void {
+    this.isAddTaskModalOpen.set(false);
+  }
+
+  addTask(result: CreatedTaskResult): void {
+    const taskDetails: TaskDetails = {
+      ...result.task,
+      category: result.category,
+    };
+
+    this.tasks.update((tasks) => [...tasks, taskDetails]);
+    this.closeAddTaskModal();
   }
 
   formatDueDate(dueDate: string): string {
