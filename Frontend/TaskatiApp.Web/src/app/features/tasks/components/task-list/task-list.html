@@ -1,0 +1,75 @@
+<main class="task-page">
+	<header class="page-header">
+		<div>
+			<h1>Tasks</h1>
+			<p class="page-subtitle">Manage your personal and work tasks</p>
+		</div>
+		<button class="primary-button" type="button">
+			<span aria-hidden="true">+</span>
+			Add Task
+		</button>
+	</header>
+
+	@if (isLoading()) {
+		<section class="state-panel loading-state" aria-live="polite">
+			<span class="spinner" aria-hidden="true"></span>
+			<p>Loading tasks...</p>
+		</section>
+	} @else if (errorMessage()) {
+		<section class="error-banner" role="alert">
+			<span class="error-icon" aria-hidden="true">!</span>
+			<p>{{ errorMessage() }}</p>
+		</section>
+	} @else if (tasks().length === 0) {
+		<section class="state-panel empty-state">
+			<span class="empty-task-icon" aria-hidden="true">
+				<svg viewBox="0 0 24 24" focusable="false">
+					<rect x="4" y="4" width="16" height="16" rx="3" />
+					<path d="m8 12 2.5 2.5L16 9" />
+				</svg>
+			</span>
+			<h2>No tasks yet</h2>
+			<p>Create your first task to get started.</p>
+			<button class="primary-button" type="button">
+				<span aria-hidden="true">+</span>
+				Add Task
+			</button>
+		</section>
+	} @else {
+		<ul class="task-list">
+			@for (task of tasks(); track task.id) {
+				<li class="task-card" [class.task-completed]="task.isCompleted">
+					<input
+						class="task-checkbox"
+						type="checkbox"
+						[checked]="task.isCompleted"
+						[disabled]="isTaskUpdating(task.id)"
+						[attr.aria-label]="task.isCompleted ? 'Mark task incomplete' : 'Mark task complete'"
+						(change)="toggleTask(task, $event)"
+					/>
+					<div class="task-content">
+						<h2>{{ task.title }}</h2>
+						@if (task.description) {
+							<p class="task-description">{{ task.description }}</p>
+						}
+						<div class="task-meta">
+							<span class="category-badge">{{ task.category.name }}</span>
+							<span>{{ formatDueDate(task.dueDate) }}</span>
+							@if (task.isCompleted) {
+								<span class="completed-badge">Completed</span>
+							}
+						</div>
+					</div>
+					<div class="task-actions">
+						<button class="text-button" type="button">Edit</button>
+						<button class="icon-button" type="button" aria-label="Delete task">
+							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12M10 10v6m4-6v6" />
+							</svg>
+						</button>
+					</div>
+				</li>
+			}
+		</ul>
+	}
+</main>

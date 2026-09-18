@@ -1,4 +1,10 @@
 import { Routes } from '@angular/router';
 
-// Task pages will be registered here as the feature grows.
-export const TASKS_ROUTES: Routes = [];
+// Load the task list when the tasks section is visited.
+export const TASKS_ROUTES: Routes = [
+	{
+		path: '',
+		loadComponent: () =>
+			import('./components/task-list/taks-list').then((module) => module.TaskList),
+	},
+];
