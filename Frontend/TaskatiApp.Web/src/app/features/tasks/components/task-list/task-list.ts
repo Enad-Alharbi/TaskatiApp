@@ -2,9 +2,10 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import type { Task, TaskDetails, UpdateTaskRequest } from '../../task.models';
 import { TaskService } from '../../task.service';
 import { AddTaskModal, type CreatedTaskResult } from '../add-task-modal/add-task-modal';
+import { EditTaskModal } from '../edit-task-modal/edit-task-modal';
 
 @Component({
-  imports: [AddTaskModal],
+  imports: [AddTaskModal, EditTaskModal],
   selector: 'app-task-list',
   styleUrl: './task-list.scss',
   templateUrl: './task-list.html',
@@ -17,6 +18,7 @@ export class TaskList implements OnInit {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly updatingTaskIds = signal<Set<number>>(new Set());
   protected readonly isAddTaskModalOpen = signal(false);
+  protected readonly editingTask = signal<TaskDetails | null>(null);
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
@@ -87,6 +89,21 @@ export class TaskList implements OnInit {
 
     this.tasks.update((tasks) => [...tasks, taskDetails]);
     this.closeAddTaskModal();
+  }
+
+  openEditTaskModal(task: TaskDetails): void {
+    this.editingTask.set(task);
+  }
+
+  closeEditTaskModal(): void {
+    this.editingTask.set(null);
+  }
+
+  updateTask(updatedTask: TaskDetails): void {
+    this.tasks.update((tasks) =>
+      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
+    );
+    this.closeEditTaskModal();
   }
 
   formatDueDate(dueDate: string): string {

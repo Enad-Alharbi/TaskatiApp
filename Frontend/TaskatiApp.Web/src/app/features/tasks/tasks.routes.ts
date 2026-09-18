@@ -5,6 +5,6 @@ export const TASKS_ROUTES: Routes = [
 	{
 		path: '',
 		loadComponent: () =>
-			import('./components/task-list/taks-list').then((module) => module.TaskList),
+			import('./components/task-list/task-list').then((module) => module.TaskList),
 	},
 ];
