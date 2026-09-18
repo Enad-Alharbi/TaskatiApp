@@ -62,7 +62,7 @@
 					</div>
 					<div class="task-actions">
 						<button class="text-button" type="button" (click)="openEditTaskModal(task)">Edit</button>
-						<button class="icon-button" type="button" aria-label="Delete task">
+						<button class="icon-button" type="button" aria-label="Delete task" (click)="openDeleteTaskModal(task)">
 							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 								<path d="M5 7h14M9 7V5h6v2m-8 0 1 12h6l1-12M10 10v6m4-6v6" />
 							</svg>
@@ -86,5 +86,13 @@
 		[task]="task"
 		(taskUpdated)="updateTask($event)"
 		(closed)="closeEditTaskModal()"
+	/>
+}
+
+@if (deletingTask(); as task) {
+	<app-delete-task-modal
+		[task]="task"
+		(taskDeleted)="removeTask($event)"
+		(closed)="closeDeleteTaskModal()"
 	/>
 }
