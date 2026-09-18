@@ -1,4 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
+import type { Category } from '../../../categories/category.models';
+import { CategoryService } from '../../../categories/category.service';
 import type { Task, TaskDetails, UpdateTaskRequest } from '../../task.models';
 import { TaskService } from '../../task.service';
 import { AddTaskModal, type CreatedTaskResult } from '../add-task-modal/add-task-modal';
@@ -13,6 +15,7 @@ import { EditTaskModal } from '../edit-task-modal/edit-task-modal';
 })
 export class TaskList implements OnInit {
   private readonly taskService = inject(TaskService);
+  private readonly categoryService = inject(CategoryService);
 
   protected readonly tasks = signal<TaskDetails[]>([]);
   protected readonly isLoading = signal(true);
@@ -21,6 +24,22 @@ export class TaskList implements OnInit {
   protected readonly isAddTaskModalOpen = signal(false);
   protected readonly editingTask = signal<TaskDetails | null>(null);
   protected readonly deletingTask = signal<TaskDetails | null>(null);
+  protected readonly categories = signal<Category[]>([]);
+  protected readonly isLoadingCategories = signal(true);
+  protected readonly categoryError = signal<string | null>(null);
+  protected readonly isCategoryFilterOpen = signal(false);
+  protected readonly selectedCategoryId = signal<number | null>(null);
+  protected readonly visibleTasks = computed(() => {
+    const selectedCategoryId = this.selectedCategoryId();
+
+    return selectedCategoryId === null
+      ? this.tasks()
+      : this.tasks().filter((task) => task.category.id === selectedCategoryId);
+  });
+  protected readonly selectedCategoryName = computed(() => {
+    const selectedCategoryId = this.selectedCategoryId();
+    return this.categories().find((category) => category.id === selectedCategoryId)?.name ?? 'All Categories';
+  });
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
@@ -33,6 +52,17 @@ export class TaskList implements OnInit {
           'Could not load tasks. Please check your connection and try again.',
         );
         this.isLoading.set(false);
+      },
+    });
+
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories.set(categories);
+        this.isLoadingCategories.set(false);
+      },
+      error: () => {
+        this.categoryError.set('Could not load categories.');
+        this.isLoadingCategories.set(false);
       },
     });
   }
@@ -119,6 +149,26 @@ export class TaskList implements OnInit {
   removeTask(taskId: number): void {
     this.tasks.update((tasks) => tasks.filter((task) => task.id !== taskId));
     this.closeDeleteTaskModal();
+  }
+
+  toggleCategoryFilter(): void {
+    if (!this.isLoadingCategories() && !this.categoryError()) {
+      this.isCategoryFilterOpen.update((isOpen) => !isOpen);
+    }
+  }
+
+  selectCategory(categoryId: number | null): void {
+    this.selectedCategoryId.set(categoryId);
+    this.isCategoryFilterOpen.set(false);
+  }
+
+  clearCategoryFilter(): void {
+    this.selectCategory(null);
+  }
+
+  @HostListener('document:click')
+  closeCategoryFilter(): void {
+    this.isCategoryFilterOpen.set(false);
   }
 
   formatDueDate(dueDate: string): string {

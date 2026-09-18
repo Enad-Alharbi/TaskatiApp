@@ -4,10 +4,59 @@
 			<h1>Tasks</h1>
 			<p class="page-subtitle">Manage your personal and work tasks</p>
 		</div>
-		<button class="primary-button" type="button" (click)="openAddTaskModal()">
-			<span aria-hidden="true">+</span>
-			Add Task
-		</button>
+		<div class="header-actions">
+			<button class="primary-button" type="button" (click)="openAddTaskModal()">
+				<span aria-hidden="true">+</span>
+				Add Task
+			</button>
+			<div class="category-filter" (click)="$event.stopPropagation()">
+				<button
+					class="filter-button"
+					type="button"
+					[disabled]="isLoadingCategories() || !!categoryError()"
+					[aria-expanded]="isCategoryFilterOpen()"
+					(click)="toggleCategoryFilter()"
+				>
+					<svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<path d="M4 6h16M7 12h10M10 18h4" />
+					</svg>
+					<span>{{ selectedCategoryName() }}</span>
+					<svg class="chevron-icon" [class.chevron-up]="isCategoryFilterOpen()" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+						<path d="m7 9 5 5 5-5" />
+					</svg>
+				</button>
+
+				@if (isCategoryFilterOpen()) {
+					<div class="category-menu" role="listbox" aria-label="Filter tasks by category">
+						<button
+							class="category-option"
+							[class.category-option-selected]="selectedCategoryId() === null"
+							type="button"
+							role="option"
+							[aria-selected]="selectedCategoryId() === null"
+							(click)="selectCategory(null)"
+						>
+							All Categories
+						</button>
+						@for (category of categories(); track category.id) {
+							<button
+								class="category-option"
+								[class.category-option-selected]="selectedCategoryId() === category.id"
+								type="button"
+								role="option"
+								[aria-selected]="selectedCategoryId() === category.id"
+								(click)="selectCategory(category.id)"
+							>
+								{{ category.name }}
+							</button>
+						}
+					</div>
+				}
+			</div>
+			@if (categoryError()) {
+				<span class="category-filter-error">{{ categoryError() }}</span>
+			}
+		</div>
 	</header>
 
 	@if (isLoading()) {
@@ -35,9 +84,17 @@
 				Add Task
 			</button>
 		</section>
+	} @else if (visibleTasks().length === 0) {
+		<section class="state-panel empty-state filtered-empty-state">
+			<h2>No tasks in this category</h2>
+			<p>Try selecting another category.</p>
+			<button class="secondary-button" type="button" (click)="clearCategoryFilter()">
+				Show All Tasks
+			</button>
+		</section>
 	} @else {
 		<ul class="task-list">
-			@for (task of tasks(); track task.id) {
+			@for (task of visibleTasks(); track task.id) {
 				<li class="task-card" [class.task-completed]="task.isCompleted">
 					<input
 						class="task-checkbox"
